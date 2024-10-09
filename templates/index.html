@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brain Tumor Classification</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- Logo and Title -->
+    <div class="logo-title-container">
+        <img src="{{ url_for('static', filename='images/brain_logo.png') }}" alt="Brain Logo" class="logo">
+        <h1>Brain Tumor Classification</h1>
+    </div>
+    <hr> <!-- Horizontal Line -->
+    <!-- Main Content Container -->
+    <div class="container">
+        
+            <h2>Welcome</h2>
+            <p class="intro-text" >
+                The website aims to classify brain tumors from .jpg images. Import your image, click "select file", then "Upload" to start the classification process.
+                <br><br><span style="color:red;"><u>IMPORTANT:</u ></span><ul style="text-align: left; font-weight: bold; "><li>The website may have errors, so always consult a specialist for an accurate diagnosis.</li><li>If you select a non-brain tumor image, the website automatically detects it as a no-tumor case. Thank you!</li></ul> 
+            </p>
+        
+        <form class="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="file-input">
+                    <input type="file" name="image" id="file" required>
+                    <label for="file"><i class="fas fa-file-upload"></i> Select File</label>
+                </div>
+                <button type="submit"><i class="fas fa-upload"></i> Upload</button>
+            </div>
+        </form>
+        <div id="processing" class="hidden">
+            <i class="fas fa-spinner fa-spin"></i> Processing...
+        </div>
+    </div>
+    <!-- Overlay for Loading -->
+    <div class="overlay" id="overlay">
+        <i class="fas fa-spinner fa-spin spinner"></i>
+    </div>
+    <!-- Modal for Result -->
+    <div class="modal" id="result-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <img id="result-image" src="" alt="Result Image" />
+            <p id="result-text"></p>
+            <button id="close-result"><i class="fas fa-times"></i> OK</button>
+        </div>
+    </div>
+    <!-- Modal for Alerts -->
+    <div class="modal-alert" id="alert-modal">
+        <div class="modal-alert-content">
+            <button class="modal-alert-close" id="alert-close">&times;</button>
+            <p id="alert-text"></p>
+            <button id="close-alert"><i class="fas fa-times"></i> OK</button>
+        </div>
+    </div>
+    <!-- Script Section -->
+    <script>
+        const form = document.querySelector('.upload-form');
+        const processingDiv = document.getElementById('processing');
+        const overlay = document.getElementById('overlay');
+        const resultModal = document.getElementById('result-modal');
+        const resultImage = document.getElementById('result-image');
+        const resultText = document.getElementById('result-text');
+        const closeResultButton = document.getElementById('close-result');
+        const modalCloseButton = document.getElementById('modal-close');
+
+        const alertModal = document.getElementById('alert-modal');
+        const alertText = document.getElementById('alert-text');
+        const closeAlertButton = document.getElementById('close-alert');
+        const alertCloseButton = document.getElementById('alert-close');
+
+        const validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files[0];
+
+            if (!validImageTypes.includes(file.type)) {
+                alertText.textContent = 'Attention: The uploaded file is not a valid image. Please upload a JPG image.';
+                alertModal.style.display = 'flex';
+                return;
+            }
+
+            overlay.style.display = 'flex';
+            processingDiv.classList.remove('hidden');
+
+            const formData = new FormData(form);
+
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            overlay.style.display = 'none';
+            processingDiv.classList.add('hidden');
+
+            if (response.ok) {
+                if (result.detection !== "notumor") {
+                    resultText.innerHTML = `<b><span style="color:red;">YES</span>, The uploaded image of the brain has ${result.detection} tumor</b> .`;
+                } else {
+                    resultText.innerHTML = `<b><span style="color:red;">NO</span>, The uploaded image of the brain has no tumor</b> .`;
+                }
+                resultImage.src = URL.createObjectURL(formData.get('image'));
+                resultModal.style.display = 'flex';
+            } else {
+                resultText.textContent = 'Error: ' + result.error;
+                resultImage.src = '';
+                resultModal.style.display = 'flex';
+            }
+        });
+
+        closeResultButton.addEventListener('click', () => {
+            resultModal.style.display = 'none';
+            resultText.textContent = '';
+            resultImage.src = '';
+        });
+
+        modalCloseButton.addEventListener('click', () => {
+            resultModal.style.display = 'none';
+            resultText.textContent = '';
+            resultImage.src = '';
+        });
+
+        closeAlertButton.addEventListener('click', () => {
+            alertModal.style.display = 'none';
+        });
+
+        alertCloseButton.addEventListener('click', () => {
+            alertModal.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
