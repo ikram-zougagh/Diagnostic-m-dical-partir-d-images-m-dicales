@@ -48,9 +48,9 @@ Le projet utilise un jeu de données public constitué d'images IRM du cerveau, 
 
 Les trois modèles ont été comparés sur la base de plusieurs métriques telles que la précision, le rappel et le F1-score :
 
-- **CNN** : A donné une précision de base autour de **85%** après plusieurs itérations d'entraînement.
-- **VGG16** : A montré une amélioration significative avec une précision de **91%** grâce à l'usage du transfert d'apprentissage.
-- **VGG19** : A légèrement surpassé VGG16 avec une précision de **92%**, grâce à sa profondeur accrue qui lui permet de capturer plus de détails dans les images.
+- **CNN** : A donné une précision de base autour de **99.07%** après plusieurs itérations d'entraînement.
+- **VGG16** : A montré une amélioration significative avec une précision de **98.13%** grâce à l'usage du transfert d'apprentissage.
+- **VGG19** : A légèrement surpassé VGG16 avec une précision de **96.26%**, grâce à sa profondeur accrue qui lui permet de capturer plus de détails dans les images.
 
 ## Utilisation
 
