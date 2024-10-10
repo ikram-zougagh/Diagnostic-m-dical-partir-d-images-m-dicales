@@ -59,5 +59,4 @@ Le projet inclut une **application web** développée en **Flask**, permettant d
 ## Conclusion
 
 Ce projet démontre la puissance des modèles de deep learning, en particulier avec l'utilisation de **CNN**, **VGG16**, et **VGG19**, dans le diagnostic médical basé sur des images. L'utilisation de modèles préentraînés a permis d'améliorer la précision et de réduire le temps d'entraînement. Cette solution pourrait être un outil utile pour les professionnels de la santé afin de détecter rapidement les tumeurs cérébrales et d'améliorer la précision des diagnostics.
-"# Diagnostic-m-dical-partir-d-images-m-dicales" 
-"# Diagnostic-m-dical-partir-d-images-m-dicales" 
+
