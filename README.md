@@ -1,6 +1,5 @@
 <div align="center">
     <h1 style="color: #2C3E50;">🔬 Medical Diagnosis from Medical Images</h1>
-    <img src="https://example.com/your-logo.png" alt="Logo" width="200">
 </div>
 
 <p style="font-size: 16px; color: #34495E;">
